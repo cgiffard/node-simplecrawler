@@ -70,7 +70,7 @@ myCrawler.on("fetchcomplete",function(queueItem, responseBuffer, response) {
 ```
 
 Then, when you're satisfied you're ready to go, start the crawler! It'll run through its queue finding linked
-resources on the domain to download, until it can't find any more.
+resources on the hostname to download, until it can't find any more.
 
 ```javascript
 myCrawler.start();
@@ -112,7 +112,7 @@ If this is annoying, and you'd really like to retain error pages by default, let
 
 Here's a complete list of what you can stuff with at this stage:
 
-* `crawler.domain` - The domain to scan. By default, simplecrawler will restrict all requests to this domain.
+* `crawler.hostname` - The hostname to scan. By default, simplecrawler will restrict all requests to this hostname.
 * `crawler.initialPath` - The initial path with which the crawler will formulate its first request. Does not restrict subsequent requests.
 * `crawler.initialPort` - The initial port with which the crawler will formulate its first request. Does not restrict subsequent requests.
 * `crawler.initialProtocol` - The initial protocol with which the crawler will formulate its first request. Does not restrict subsequent requests.
@@ -121,21 +121,21 @@ Here's a complete list of what you can stuff with at this stage:
 * `crawler.timeout` - The maximum time the crawler will wait for headers before aborting the request.
 * `crawler.userAgent` - The user agent the crawler will report. Defaults to `Node/SimpleCrawler 0.1 (http://www.github.com/cgiffard/node-simplecrawler)`.
 * `crawler.queue` - The queue in use by the crawler (Must implement the `FetchQueue` interface)
-* `crawler.filterByDomain` - Specifies whether the crawler will restrict queued requests to a given domain/domains.
-* `crawler.scanSubdomains` - Enables scanning subdomains (other than www) as well as the specified domain. Defaults to false.
-* `crawler.ignoreWWWDomain` - Treats the `www` domain the same as the originally specified domain. Defaults to true.
-* `crawler.stripWWWDomain` - Or go even further and strip WWW subdomain from requests altogether!
+* `crawler.filterByhostname` - Specifies whether the crawler will restrict queued requests to a given hostname/hostnames.
+* `crawler.scanSubhostnames` - Enables scanning subhostnames (other than www) as well as the specified hostname. Defaults to false.
+* `crawler.ignoreWWWhostname` - Treats the `www` hostname the same as the originally specified hostname. Defaults to true.
+* `crawler.stripWWWhostname` - Or go even further and strip WWW subhostname from requests altogether!
 * `crawler.discoverResources` - Use simplecrawler's internal resource discovery function. Defaults to true. (switch it off if you'd prefer to discover and queue resources yourself!)
 * `crawler.cache` - Specify a cache architecture to use when crawling. Must implement `SimpleCache` interface.
 * `crawler.useProxy` - The crawler should use an HTTP proxy to make its requests.
 * `crawler.proxyHostname` - The hostname of the proxy to use for requests.
 * `crawler.proxyPort` - The port of the proxy to use for requests.
-* `crawler.domainWhitelist` - An array of domains the crawler is permitted to crawl from. If other settings are more permissive, they will override this setting.
+* `crawler.hostnameWhitelist` - An array of hostnames the crawler is permitted to crawl from. If other settings are more permissive, they will override this setting.
 * `crawler.supportedMimeTypes` - An array of RegEx objects used to determine supported MIME types (types of data simplecrawler will scan for links.) If you're  not using simplecrawler's resource discovery function, this won't have any effect.
 * `crawler.allowedProtocols` - An array of RegEx objects used to determine whether a URL protocol is supported. This is to deal with nonstandard protocol handlers that regular HTTP is sometimes given, like `feed:`. It does not provide support for non-http protocols (and why would it!?)
 * `crawler.maxResourceSize` - The maximum resource size, in bytes, which will be downloaded. Defaults to 16MB.
 * `crawler.downloadUnsupported` - Simplecrawler will download files it can't parse. Defaults to true, but if you'd rather save the RAM and GC lag, switch it off.
-* `crawler.needsAuth` - Flag to specify if the domain you are hitting requires basic authentication
+* `crawler.needsAuth` - Flag to specify if the hostname you are hitting requires basic authentication
 * `crawler.authUser` - Username provdied for needsAuth flag
 * `crawler.authPass` - Passowrd provided for needsAuth flag
 
@@ -160,7 +160,7 @@ It's not just an array though.
 You could always just `.push` a new resource onto the queue, but you'd need to have it all in the correct format, and validate the URL yourself, and oh wouldn't that be a pain. Instead, use the `queue.add` function provided for your convenience:
 
 ```javascript
-crawler.queue.add(protocol,domain,port,path);
+crawler.queue.add(protocol,hostname,port,path);
 ```
 
 That's it! It's basically just a URL, but comma separated (that's how you can remember the order.)
@@ -171,9 +171,9 @@ Because when working with simplecrawler, you'll constantly be handed queue items
 
 * `url` - The complete, canonical URL of the resource.
 * `protocol` - The protocol of the resource (http, https)
-* `domain` - The full domain of the resource
+* `hostname` - The full hostname of the resource
 * `port` - The port of the resource
-* `path` - The bit of the URL after the domain - includes the querystring.
+* `path` - The bit of the URL after the hostname - includes the querystring.
 * `fetched` - Has the request for this item been completed? You can monitor this as requests are processed.
 * `status` - The internal status of the item, always a string. This can be one of:
 	* `queued` - The resource is in the queue to be fetched, but nothing's happened to it yet.

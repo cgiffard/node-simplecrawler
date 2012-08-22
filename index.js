@@ -11,10 +11,10 @@ var http = require("http"),
 	https = require("https");
 
 // Crawler Constructor
-var Crawler = function(domain,initialPath,initialPort,interval) {
+var Crawler = function(hostname,initialPath,initialPort,interval) {
 	// SETTINGS TO STUFF WITH (not here! Do it when you create a `new Crawler()`)
-	// Domain to crawl
-	this.domain				= domain || "";
+	// hostname to crawl
+	this.hostname				= hostname || "";
 
 	// Gotta start crawling *somewhere*
 	this.initialPath		= initialPath || "/";
@@ -37,18 +37,18 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 	// Queue for requests - FetchQueue gives us stats and other sugar (but it's basically just an array)
 	this.queue				= new FetchQueue();
 
-	// Do we filter by domain?
+	// Do we filter by hostname?
 	// Unless you want to be crawling the entire internet, I would recommend leaving this on!
-	this.filterByDomain		= true;
+	this.filterByhostname		= true;
 
-	// Do we scan subdomains?
-	this.scanSubdomains		= false;
+	// Do we scan subhostnames?
+	this.scanSubhostnames		= false;
 
-	// Treat WWW subdomain the same as the main domain (and don't count it as a separate subdomain)
-	this.ignoreWWWDomain	= true;
+	// Treat WWW subhostname the same as the main hostname (and don't count it as a separate subhostname)
+	this.ignoreWWWhostname	= true;
 
-	// Or go even further and strip WWW subdomain from domains altogether!
-	this.stripWWWDomain		= false;
+	// Or go even further and strip WWW subhostname from hostnames altogether!
+	this.stripWWWhostname		= false;
 
 	// Use simplecrawler's internal resource discovery function (switch it off if you'd prefer to discover and queue resources yourself!)
 	this.discoverResources	= true;
@@ -66,9 +66,9 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 	this.authUser = "";
 	this.authPass = "";
 
-	// Domain Whitelist
-	// We allow domains to be whitelisted, so cross-domain requests can be made.
-	this.domainWhitelist	= [];
+	// hostname Whitelist
+	// We allow hostnames to be whitelisted, so cross-hostname requests can be made.
+	this.hostnameWhitelist	= [];
 
 	// Supported Protocols
 	this.allowedProtocols = [
@@ -98,16 +98,16 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 	this.fetchConditions = [];
 
 	// Initialise our queue by pushing the initial request data into it...
-	this.queue.add(this.initialProtocol,this.domain,this.initialPort,this.initialPath);
+	this.queue.add(this.initialProtocol,this.hostname,this.initialPort,this.initialPath);
 
-	// Takes a URL, and extracts the protocol, domain, port, and resource
+	// Takes a URL, and extracts the protocol, hostname, port, and resource
 	function processURL(URL,URLContext) {
-		var split, protocol = "http", domain = crawler.domain, port = 80, path = "/";
+		var split, protocol = "http", hostname = crawler.hostname, port = 80, path = "/";
 		var hostData = "", pathStack, relativePathStack, invalidPath = false;
 
 		if (URLContext) {
 			port = URLContext.port;
-			domain = URLContext.domain;
+			hostname = URLContext.hostname;
 			protocol = URLContext.protocol;
 			path = URLContext.path;
 		}
@@ -115,15 +115,15 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 		// Trim URL
 		URL = URL.replace(/^\s+/,"").replace(/\s+$/,"");
 
-		// Check whether we're global, domain-absolute or relative
+		// Check whether we're global, hostname-absolute or relative
 		if (URL.match(/^http(s)?:\/\//i)) {
-			// We're global. Try and extract domain and port
+			// We're global. Try and extract hostname and port
 			split = URL.replace(/^http(s)?:\/\//i,"").split(/\//g);
-			hostData = split[0] && split[0].length ? split[0] : domain;
+			hostData = split[0] && split[0].length ? split[0] : hostname;
 
 			if (hostData.split(":").length > 0) {
 				hostData = hostData.split(":");
-				domain = hostData[0];
+				hostname = hostData[0];
 				port = hostData.pop();
 				port = isNaN(port) ? 80 : port;
 			}
@@ -187,20 +187,20 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 			path = "/" + pathStack.join("/");
 		}
 
-		// Strip the www subdomain out if required
-		if (crawler.stripWWWDomain) {
-			domain = domain.replace(/^www\./ig,"");
+		// Strip the www subhostname out if required
+		if (crawler.stripWWWhostname) {
+			hostname = hostname.replace(/^www\./ig,"");
 		}
 
 		// Replace problem entities...
 		path = path.replace(/&amp;/ig,"&");
 
-		// Ensure domain is always lower-case
-		domain = domain.toLowerCase();
+		// Ensure hostname is always lower-case
+		hostname = hostname.toLowerCase();
 
 		return {
 			"protocol": protocol,
-			"domain": domain,
+			"hostname": hostname,
 			"port": port,
 			"path": path
 		};
@@ -286,62 +286,62 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 		return resources;
 	}
 
-	// Checks to see whether domain is valid for crawling.
-	function domainValid(domain) {
-		function domainInWhitelist(domain) {
+	// Checks to see whether hostname is valid for crawling.
+	function hostnameValid(hostname) {
+		function hostnameInWhitelist(hostname) {
 			// If there's no whitelist, or the whitelist is of zero length, just return false.
-			if (!crawler.domainWhitelist || !crawler.domainWhitelist.length) return false;
+			if (!crawler.hostnameWhitelist || !crawler.hostnameWhitelist.length) return false;
 			// Otherwise, scan through it.
-			return !!crawler.domainWhitelist.reduce(function(prev,cur,index,array) {
-				// If we already located the relevant domain in the whitelist...
+			return !!crawler.hostnameWhitelist.reduce(function(prev,cur,index,array) {
+				// If we already located the relevant hostname in the whitelist...
 				if (prev) return prev;
-				// If the domain is just equal, return true.
-				if (domain === cur) return true;
-				// If we're ignoring WWW subdomains, and both domains, less www. are the same, return true.
-				if (crawler.ignoreWWWDomain && domain.replace(/^www\./i,"") === cur.replace(/^www\./i,"")) return true;
+				// If the hostname is just equal, return true.
+				if (hostname === cur) return true;
+				// If we're ignoring WWW subhostnames, and both hostnames, less www. are the same, return true.
+				if (crawler.ignoreWWWhostname && hostname.replace(/^www\./i,"") === cur.replace(/^www\./i,"")) return true;
 				// Otherwise, sorry. No dice.
 				return false;
 			},false);
 		}
 
-		// Checks if the first domain is a subdomain of the second
-		function isSubdomainOf(subdomain,domain) {
-			domainParts = domain.split(/\./g);
-			subdomainParts = subdomain.split(/\./g);
+		// Checks if the first hostname is a subhostname of the second
+		function isSubhostnameOf(subhostname,hostname) {
+			hostnameParts = hostname.split(/\./g);
+			subhostnameParts = subhostname.split(/\./g);
 
-			// If we're ignoring www, remove it from both (if www is the first domain component...)
-			if (crawler.ignoreWWWDomain) {
-				if (domainParts[0].match(/^www\./i)) domainParts = domainParts.slice(1);
-				if (subdomainParts[0].match(/^www\./i)) domainParts = domainParts.slice(1);
+			// If we're ignoring www, remove it from both (if www is the first hostname component...)
+			if (crawler.ignoreWWWhostname) {
+				if (hostnameParts[0].match(/^www\./i)) hostnameParts = hostnameParts.slice(1);
+				if (subhostnameParts[0].match(/^www\./i)) hostnameParts = hostnameParts.slice(1);
 			}
 
-			// Can't have a subdomain that's shorter than its parent.
-			if (subdomain.length < domain.length) return false;
+			// Can't have a subhostname that's shorter than its parent.
+			if (subhostname.length < hostname.length) return false;
 
-			// Loop through subdomain backwards, from TLD to least significant domain, break on first error.
-			var index = subdomainParts.length - 1;
-			while (index >= 0 && index >= subdomainParts.length - domainParts.length) {
-				if (subdomainParts[index] !== domainParts[index]) return false;
+			// Loop through subhostname backwards, from TLD to least significant hostname, break on first error.
+			var index = subhostnameParts.length - 1;
+			while (index >= 0 && index >= subhostnameParts.length - hostnameParts.length) {
+				if (subhostnameParts[index] !== hostnameParts[index]) return false;
 				index --;
 			}
 
 			return true;
 		}
 
-				// If we're not filtering by domain, just return true.
-		return	(!crawler.filterByDomain	||
-				// Or if the domain is just the right one, return true.
-				(domain === crawler.domain)	||
-				// Or if we're ignoring WWW subdomains, and both domains, less www. are the same, return true.
-				(crawler.ignoreWWWDomain && crawler.domain.replace(/^www\./i,"") === domain.replace(/^www\./i,"")) ||
-				// Or if the domain in question exists in the domain whitelist, return true.
-				domainInWhitelist(domain) ||
-				// Or if we're scanning subdomains, and this domain is a subdomain of the crawler's set domain, return true.
-				(crawler.scanSubdomains && isSubdomainOf(domain,crawler.domain)));
+				// If we're not filtering by hostname, just return true.
+		return	(!crawler.filterByhostname	||
+				// Or if the hostname is just the right one, return true.
+				(hostname === crawler.hostname)	||
+				// Or if we're ignoring WWW subhostnames, and both hostnames, less www. are the same, return true.
+				(crawler.ignoreWWWhostname && crawler.hostname.replace(/^www\./i,"") === hostname.replace(/^www\./i,"")) ||
+				// Or if the hostname in question exists in the hostname whitelist, return true.
+				hostnameInWhitelist(hostname) ||
+				// Or if we're scanning subhostnames, and this hostname is a subhostname of the crawler's set hostname, return true.
+				(crawler.scanSubhostnames && isSubhostnameOf(hostname,crawler.hostname)));
 	}
 
 	// Make available externally to this scope
-	crawler.isDomainValid = domainValid;
+	crawler.ishostnameValid = hostnameValid;
 
 	// Externally accessible function for auditing the number of open requests...
 	crawler.openRequests = function() {
@@ -374,12 +374,12 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 			return false;
 		}
 		
-		// Check the domain is valid before adding it to the queue
-		if (domainValid(parsedURL.domain)) {
+		// Check the hostname is valid before adding it to the queue
+		if (hostnameValid(parsedURL.hostname)) {
 			try {
 				crawler.queue.add(
 					parsedURL.protocol,
-					parsedURL.domain,
+					parsedURL.hostname,
 					parsedURL.port,
 					parsedURL.path,
 					function queueAddCallback(error,newQueueItem) {
@@ -415,7 +415,7 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 		client = (queueItem.protocol === "https" ? https : http);
 
 		// Extract request options from queue;
-		var requestHost = queueItem.domain,
+		var requestHost = queueItem.hostname,
 			requestPort = queueItem.port,
 			requestPath = queueItem.path;
 
