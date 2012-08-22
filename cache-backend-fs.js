@@ -129,7 +129,7 @@ backend.prototype.setItem = function(queueObject,data,callback) {
 	callback = callback instanceof Function ? callback : function(){};
 	
 	var backend = this;
-	var pathStack = [queueObject.protocol, queueObject.domain, queueObject.port];
+	var pathStack = [queueObject.protocol, queueObject.hostname, queueObject.port];
 	pathStack = pathStack.concat(sanitisePath(queueObject.path,queueObject).split(/\/+/g));
 	
 	var cacheItemExists = false;

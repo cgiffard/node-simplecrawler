@@ -21,7 +21,7 @@ var FetchQueue = function(){
 };
 
 FetchQueue.prototype = [];
-FetchQueue.prototype.add = function(protocol,domain,port,path,callback) {
+FetchQueue.prototype.add = function(protocol,hostname,port,path,callback) {
 	callback = callback && callback instanceof Function ? callback : function(){};
 	var self = this;
 	
@@ -32,9 +32,9 @@ FetchQueue.prototype.add = function(protocol,domain,port,path,callback) {
 		return callback(new Error("Port must be numeric!"));
 	}
 	
-	var url = protocol + "://" + domain + (port !== 80 ? ":" + port : "") + path;
+	var url = protocol + "://" + hostname + (port !== 80 ? ":" + port : "") + path;
 	
-	this.exists(protocol,domain,port,path,
+	this.exists(protocol,hostname,port,path,
 		function(err,exists) {
 			if (err) return callback(err);
 			
@@ -42,7 +42,7 @@ FetchQueue.prototype.add = function(protocol,domain,port,path,callback) {
 				var queueItem = {
 					"url": url,
 					"protocol": protocol,
-					"domain": domain,
+					"hostname": hostname,
 					"port": port,
 					"path": path,
 					"fetched": false,
@@ -59,10 +59,10 @@ FetchQueue.prototype.add = function(protocol,domain,port,path,callback) {
 };
 
 // Check if an item already exists in the queue...
-FetchQueue.prototype.exists = function(protocol,domain,port,path,callback) {
+FetchQueue.prototype.exists = function(protocol,hostname,port,path,callback) {
 	callback = callback && callback instanceof Function ? callback : function(){};
 	
-	var url = (protocol + "://" + domain + (port !== 80 ? ":" + port : "") + path).toLowerCase();
+	var url = (protocol + "://" + hostname + (port !== 80 ? ":" + port : "") + path).toLowerCase();
 	
 	if (!!this.scanIndex[url]) {
 		callback(null,1);
