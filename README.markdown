@@ -28,7 +28,7 @@ var Crawler = require("simplecrawler").Crawler;
 Then create your crawler:
 
 ```javascript
-var myCrawler = new Crawler("www.example.com");
+var myCrawler = new Crawler("http", "www.example.com");
 ```
 
 Nonstandard port? HTTPS? Want to start archiving a specific path? No problem:
@@ -39,7 +39,7 @@ myCrawler.initialPort = 8080;
 myCrawler.initialProtocol = "https";
 
 // Or:
-var myCrawler = new Crawler("www.example.com","/archive",8080);
+var myCrawler = new Crawler("https", "www.example.com","/archive",8080);
 
 ```
 
