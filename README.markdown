@@ -399,6 +399,7 @@ is expected to have:
 * `host` - The full domain/hostname of the resource
 * `port` - The port of the resource
 * `path` - The bit of the URL after the domain - includes the querystring.
+* `depth` - The depth of the current item, starts at 1
 * `fetched` - Has the request for this item been completed? You can monitor this as requests are processed.
 * `status` - The internal status of the item, always a string. This can be one of:
 	* `queued` - The resource is in the queue to be fetched, but nothing's happened to it yet.
