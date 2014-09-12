@@ -40,5 +40,10 @@ module.exports = {
 
 	"/timeout": function(write) {
 		// We want to trigger a timeout. Never respond.
+	},
+
+	// Test for max redirects
+	"/redir-loop": function(write,redir) {
+		redir("/redir-loop");
 	}
 };

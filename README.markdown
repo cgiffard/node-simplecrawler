@@ -313,6 +313,9 @@ Here's a complete list of what you can stuff with at this stage:
 *	`crawler.urlEncoding` -
 	Set this to `iso8859` to trigger URIjs' re-encoding of iso8859 URLs to unicode.
 	Defaults to `unicode`.
+*	`crawler.maxSameRedirects` -
+	Define the max redirects the crawler should follow to the same page.
+	Defaults to 0 (we don't follow redirects to the same page).
 
 #### Excluding certain resources from downloading
 
