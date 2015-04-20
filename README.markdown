@@ -271,6 +271,8 @@ Here's a complete list of what you can stuff with at this stage:
 	Or go even further and strip WWW subdomain from requests altogether!
 *	`crawler.stripQuerystring` -
 	Specify to strip querystring parameters from URLs. Defaults to false.
+*	`crawler.queryParams` -
+	An object containing key value pairs to append as query parameters to every request.
 *	`crawler.discoverResources` -
 	Use simplecrawler's internal resource discovery function. Defaults to true.
 	(switch it off if you'd prefer to discover and queue resources yourself!)
