@@ -32,10 +32,10 @@
   },
   "devDependencies": {
     "mocha": "~1.8.2",
-    "jshint": "~0.7.x",
+    "jshint": "^2.7.0",
     "chai": "~1.2.0"
   },
   "dependencies": {
-    "URIjs": "~1.10.2"
+    "URIjs": "^1.15.0"
   }
 }
