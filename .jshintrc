@@ -1,11 +1,12 @@
 {
-  "asi": false,
+  "asi": true,
+  "curly": false,
+  "eqeqeq": true,
+  "eqnull": true,
+  "evil": true,
+  "expr": true,
+  "funcscope": true,
+  "newcap": false,
   "node": true,
-  "require": true,
-  "process": true,
-  "module": true,
-  "setInterval": true,
-  "setTimeout": true,
-  "clearTimeout": true,
-  "Buffer": true
+  "undef": true
 }
