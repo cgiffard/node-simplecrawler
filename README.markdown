@@ -295,6 +295,10 @@ Here's a complete list of what you can stuff with at this stage:
 
 *	`crawler.discoverRegex` -
 	Array of regex objects that simplecrawler uses to discover resources.
+*	`crawler.discoverNoDepthRegex` —
+	Array of regex objects that simplecrawler will explude from	`maxDepth`
+	checks (will not trigger if not set). Allows paginated posts etc to be
+	fetched in full.
 *	`crawler.cache` -
 	Specify a cache architecture to use when crawling. Must implement
 	`SimpleCache` interface. You can save the site to disk using the built in file
