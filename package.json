@@ -31,7 +31,7 @@
   },
   "main": "./lib/index.js",
   "dependencies": {
-    "URIjs": "^1.16.0"
+    "urijs": "^1.16.0"
   },
   "devDependencies": {
     "chai": "^3.2.0",
