@@ -36,13 +36,15 @@ describe("Crawler link discovery", function() {
         var links =
             discover("  <a href='google.com'> " +
                      " <img src=\"http://example.com/resource with spaces.txt\"> " +
+                     " <img srcset='http://example.com/resource-without-spaces.txt 123w'> " +
                      " url('thingo.com/test.html')");
 
         links.should.be.an("array");
-        links.length.should.equal(4);
+        links.length.should.equal(5);
         links[0].should.equal("google.com");
         links[1].should.equal("http://example.com/resource%20with%20spaces.txt");
-        links[2].should.equal("thingo.com/test.html");
+        links[2].should.equal("http://example.com/resource-without-spaces.txt");
+        links[3].should.equal("thingo.com/test.html");
     });
 
     it("should discover URLS in unquoted attributes in the document", function() {
