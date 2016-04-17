@@ -181,9 +181,12 @@ in parentheses.
 * `cookieerror` (queueItem, error, setCookieHeader) -
     Fired when an error was caught trying to add a cookie to the cookie jar.
 * `fetchcomplete` (queueItem, responseBody, responseObject) -
-    Fired when the resource is completely downloaded. The response body is
+    Fired when a resource is completely downloaded. The response body is
     provided as a Buffer per default, unless `decodeResponses` is truthy, in
     which case it's a decoded string representation of the body.
+* `fetchdrop` (queueItem, responseBody, responseObject)
+    Fired when a resource got downloaded but discarded because the size of maxDepth
+    doesn't match or fetchWhitelistedMimeTypesBelowMaxDepth isn't enabled.
 * `fetchdisallowed` (parsedURL) -
     Fired when a resource isn't fetched due to robots.txt rules. See
     `respectRobotsTxt` option. See [Adding a fetch
@@ -709,7 +712,7 @@ list below before submitting an issue.
     need to react more than once to what happens in simplecrawler.
 
 - **Q: Something's happening and I don't see the output I'm expecting!**
-    
+
     Before filing an issue, check to see that you're not just missing something by
     logging *all* crawler events with the code below:
 
@@ -738,7 +741,7 @@ list below before submitting an issue.
         originalEmit.apply(crawler, arguments);
     };
     ```
-    
+
     If you don't see what you need after inserting that code block, and you still need help,
     please attach the output of all the events fired with your email/issue.
 
