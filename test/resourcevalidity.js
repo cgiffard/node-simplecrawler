@@ -284,5 +284,16 @@ describe("Resource validity checker", function() {
 
         });
 
+        it("should make sure the port number is not empty", function () {
+
+            var crawler = makeCrawler("example.com", 3000);
+
+            crawler.processURL("http://www.example.com").port.should.equal(80);
+            crawler.processURL("http://www.example.com:80").port.should.equal(80);
+            crawler.processURL("https://www.example.com").port.should.equal(443);
+            crawler.processURL("https://www.example.com:443").port.should.equal(443);
+
+        });
+
     });
 });
