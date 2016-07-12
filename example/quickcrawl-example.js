@@ -3,7 +3,7 @@
 
 var Crawler = require("../lib");
 
-Crawler.crawl("http://deewr.gov.au/")
+Crawler.crawl("http://deewr.gov.au/?query=params")
     .on("fetchstart", function(queueItem) {
         console.log("Starting request for:", queueItem.url);
     })
