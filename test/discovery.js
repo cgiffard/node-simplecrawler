@@ -190,14 +190,15 @@ describe("Crawler link discovery", function() {
     it("should find resources in srcset attributes", function() {
 
         var links =
-            discover("<img src='pic-200.png' srcset='pic-200.png 200px, pic-400.png 400w'>", {
+            discover("<img title='pic-200' src='pic-200.png' srcset='pic-200.png 200px, pic-400.png 400w' width='400' height='300'><img width='400' alt='pic-201' src='pic-201.png' srcset='pic-201.png 200px, pic-401.png 400w' height='300'>", {
                 url: "https://example.com/"
             });
-
         links.should.be.an("array");
-        links.length.should.equal(2);
+        links.length.should.equal(4);
         links[0].should.equal("https://example.com/pic-200.png");
-        links[1].should.equal("https://example.com/pic-400.png");
+        links[1].should.equal("https://example.com/pic-201.png");
+        links[2].should.equal("https://example.com/pic-400.png");
+        links[3].should.equal("https://example.com/pic-401.png");
     });
 
     it("should respect nofollow values in robots meta tags", function() {
