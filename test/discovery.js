@@ -188,9 +188,8 @@ describe("Crawler link discovery", function() {
     });
 
     it("should find resources in srcset attributes", function() {
-        // http://w3c.github.io/html/semantics-embedded-content.html#element-attrdef-img-srcset
         var links =
-            discover("<img src='pic.png' srcset='pic-200.png, pic-400.png 400w, pic-800.png 800w 2x'>", {
+            discover("<img src='pic.png' srcset='pic-200.png, pic-400.png 400w, pic-800.png 2x'>", {
                 url: "https://example.com/"
             });
 
