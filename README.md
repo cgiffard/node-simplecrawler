@@ -30,6 +30,7 @@ pages and written tens of gigabytes to disk without issue.
 - [Events](#events)
     - [A note about HTTP error conditions](#a-note-about-http-error-conditions)
     - [Waiting for asynchronous event listeners](#waiting-for-asynchronous-event-listeners)
+    - [Sample event objects](#sample-event-objects)
 - [Configuration](#configuration)
 - [Fetch conditions](#fetch-conditions)
 - [Download conditions](#download-conditions)
@@ -234,6 +235,61 @@ crawler.on("fetchcomplete", function(queueItem, data, res) {
         foundURLs.forEach(crawler.queueURL.bind(crawler));
         continue();
     });
+});
+```
+
+### Sample event objects
+
+#### queueItem
+```js
+{ 
+  url: 'http://geri-indai.lt/',
+  protocol: 'http',
+  host: 'geri-indai.lt',
+  port: 80,
+  path: '/',
+  depth: 1,
+  fetched: true,
+  status: 'downloaded',
+  stateData: 
+   { 
+     requestLatency: 2256,
+     requestTime: 2260,
+     contentLength: 24012,
+     contentType: 'text/html; charset=utf-8',
+     code: 200,
+     headers: 
+      { 
+        date: 'Thu, 21 Jul 2016 09:56:55 GMT',
+        server: 'Apache/2.4.7',
+        'x-powered-by': 'PHP/5.5.9-1ubuntu4.11',
+        p3p: 'CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"',
+        'powered-by': 'PrestaShop',
+        'set-cookie': [Object],
+        vary: 'Accept-Encoding',
+        'content-encoding': 'gzip',
+        'content-length': '24012',
+        connection: 'close',
+        'content-type': 'text/html; charset=utf-8' 
+      },
+     downloadTime: 4,
+     actualDataSize: 24012,
+     sentIncorrectSize: false 
+    } 
+}
+```
+
+#### responseBody
+
+```
+<Buffer 0d 0a 0d 0a 3c 21 44 4f 43 54 59 50 45 20 48 54 4d 4c 3e 20 3c 21 2d ... >
+```
+
+- get HTML of response:
+
+```js
+let $ = cheerio.load(responseBody.toString('utf8'), {
+    decodeEntities: true,
 });
 ```
 
@@ -710,6 +766,7 @@ crawler.discoverResources = function(buffer, queueItem) {
     }).get();
 };
 ```
+
 
 ## FAQ/Troubleshooting
 
