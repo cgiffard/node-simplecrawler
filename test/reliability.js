@@ -183,8 +183,10 @@ describe("Crawler reliability", function() {
                 // queue._oldestUnfetchedItem reviving properly
                 localCrawler.queueURL("http://127.0.0.1:3000/stage/4");
 
-                // Lets the queue be populated
-                process.nextTick(testFreezeDefrost);
+                // Lets the queue be populated (wait two ticks)
+                process.nextTick(function() {
+                    process.nextTick(testFreezeDefrost);
+                });
             }
         });
 
