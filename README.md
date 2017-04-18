@@ -1,5 +1,7 @@
 # Simple web crawler for node.js
 
+[![Join the chat at https://gitter.im/cgiffard/node-simplecrawler](https://badges.gitter.im/cgiffard/node-simplecrawler.svg)](https://gitter.im/cgiffard/node-simplecrawler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![NPM version](https://img.shields.io/npm/v/simplecrawler.svg)](https://www.npmjs.com/package/simplecrawler)
 [![Linux Build Status](https://img.shields.io/travis/cgiffard/node-simplecrawler/master.svg)](https://travis-ci.org/cgiffard/node-simplecrawler)
 [![Windows Build Status](https://img.shields.io/appveyor/ci/cgiffard/node-simplecrawler/master.svg?label=Windows%20build)](https://ci.appveyor.com/project/cgiffard/node-simplecrawler/branch/master)
