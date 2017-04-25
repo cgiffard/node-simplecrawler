@@ -367,6 +367,8 @@ change to adapt it to your specific needs.
     Set this to `iso8859` to trigger
     [URI.js](https://medialize.github.io/URI.js/)' re-encoding of iso8859 URL's
     to unicode.
+* `crawler.urlNormalize` = true by default. 
+    Set it to false if url should not be normalized.  [URI.js](https://medialize.github.io/URI.js/).     
 * `crawler.maxDepth=0` -
     Defines a maximum distance from the original request at which resources will
     be downloaded.
