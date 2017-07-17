@@ -331,4 +331,20 @@ describe("Resource validity checker", function() {
 
         crawler.start();
     });
+
+    it("Should be able to provide normalize url option only if urlNormalize equal true", function () {
+        var crawler = makeCrawler("http://example.com:3000");
+        crawler.processURL("http://www.example.com/path/A%26D").path.should.equal("/path/A&D");
+        crawler.urlNormalize = false;
+        crawler.processURL("http://www.example.com/path/A%26D").path.should.equal("/path/A%26D");
+        crawler.urlNormalize = true;
+        crawler.processURL("http://www.example.com/path/A%26D").path.should.equal("/path/A&D");
+        crawler.urlNormalize = false;
+        crawler.processURL("http://example.com/example/Hello&World").path.should.equal("/example/Hello&World");
+        crawler.processURL("http://example.com/test/Hello%26World").path.should.equal("/test/Hello%26World");
+        crawler.urlNormalize = true;
+        crawler.processURL("http://example.com/example/Hello&World").path.should.equal("/example/Hello&World");
+        crawler.processURL("http://example.com/test/Hello%26World").path.should.equal("/test/Hello&World");
+    });
+
 });
