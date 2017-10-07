@@ -679,7 +679,9 @@ crawler.queue.freeze("mysavedqueue.json", function () {
     process.exit();
 });
 
-crawler.queue.defrost("mysavedqueue.json");
+crawler.queue.defrost("mysavedqueue.json", function () {
+    process.exit();
+});
 ```
 
 ## Cookies
