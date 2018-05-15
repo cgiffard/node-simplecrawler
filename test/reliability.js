@@ -275,7 +275,7 @@ describe("Crawler reliability", function() {
             localCrawler.on("fetchstart", function() {
 
                 // If we haven't been called previously
-                if (!fetchStartCallCount) {
+                if (fetchStartCallCount !== 2) {
                     return fetchStartCallCount++;
                 }
 
