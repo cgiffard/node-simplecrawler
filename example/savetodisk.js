@@ -8,7 +8,7 @@ var downloadSite = function(initialURL, callback) {
     var fs = require("node-fs"),
         url = require("url"),
         path = require("path"),
-        Crawler = require("simplecrawler").Crawler;
+        Crawler = require("simplecrawler");
 
     var myCrawler = new Crawler(initialURL),
         domain = url.parse(initialURL).hostname;
