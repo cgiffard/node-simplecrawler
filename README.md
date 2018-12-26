@@ -382,6 +382,8 @@ change to adapt it to your specific needs.
     validated against known CAs. Only applies to https requests. You may also
     have to set the environment variable NODE_TLS_REJECT_UNAUTHORIZED to '0'.
     For example: `process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';`
+* `crawler.localAddress="127.0.0.1"` -
+    Set the local address to use for outgoing calls.
 
 ## Fetch conditions
 
