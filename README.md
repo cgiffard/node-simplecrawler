@@ -4,7 +4,8 @@
 [![Linux Build Status](https://img.shields.io/travis/simplecrawler/simplecrawler/master.svg)](https://travis-ci.org/simplecrawler/simplecrawler)
 [![Windows Build Status](https://img.shields.io/appveyor/ci/fredrikekelund/simplecrawler.svg?label=Windows%20build)](https://ci.appveyor.com/project/fredrikekelund/simplecrawler/branch/master)
 [![Dependency Status](https://img.shields.io/david/simplecrawler/simplecrawler.svg)](https://david-dm.org/simplecrawler/simplecrawler)
-[![devDependency Status](https://img.shields.io/david/dev/simplecrawler/simplecrawler.svg)](https://david-dm.org/simplecrawler/simplecrawler?type=dev) [![Greenkeeper badge](https://badges.greenkeeper.io/simplecrawler/simplecrawler.svg)](https://greenkeeper.io/)
+[![devDependency Status](https://img.shields.io/david/dev/simplecrawler/simplecrawler.svg)](https://david-dm.org/simplecrawler/simplecrawler?type=dev)
+[![Greenkeeper badge](https://badges.greenkeeper.io/simplecrawler/simplecrawler.svg)](https://greenkeeper.io/)
 
 simplecrawler is designed to provide a basic, flexible and robust API for crawling websites. It was written to archive, analyse, and search some very large websites and has happily chewed through hundreds of thousands of pages and written tens of gigabytes to disk without issue.
 
@@ -70,7 +71,7 @@ var crawler = Crawler("http://www.example.com/")
     });
 ```
 
-By default, the crawler will only fetch resources on the same domain as that in the URL passed to the constructor. But this can be changed through the <code><a href="#Crawler+domainWhitelist">crawler.domainWhitelist</a></code> property.
+By default, the crawler will only fetch resources on the same domain as that in the URL passed to the constructor. But this can be changed through the <code><a href="#Crawler+domainWhitelist">domainWhitelist</a></code> property.
 
 Now, let's configure some more things before we start crawling. Of course, you're probably wanting to ensure you don't take down your web server. Decrease the concurrency from five simultaneous requests - and increase the request interval from the default 250 ms like this:
 
@@ -91,7 +92,7 @@ crawler.maxDepth = 3; // Etc.
 
 For a full list of configurable properties, see the [configuration section](#configuration).
 
-You'll also need to set up event listeners for the [events](#events) you want to listen to. <code>crawler.fetchcomplete</code> and <code>crawler.complete</code> are good places to start.
+You'll also need to set up event listeners for the [events](#events) you want to listen to. <code>Crawler#fetchcomplete</code> and <code>Crawler#complete</code> are good places to start.
 
 ```js
 crawler.on("fetchcomplete", function(queueItem, responseBuffer, response) {
@@ -785,7 +786,7 @@ Removes a download condition from the download conditions array.
 
 ## The queue
 
-Like any other web crawler, simplecrawler has a queue. It can be directly accessed through <code><a href="#Crawler+queue">crawler.queue</a></code> and implements an asynchronous interface for accessing queue items and statistics. There are several methods for interacting with the queue, the simplest being <code><a href="#FetchQueue+get">crawler.queue.get</a></code>, which lets you get a queue item at a specific index in the queue.
+Like any other web crawler, simplecrawler has a queue. It can be directly accessed through <code><a href="#Crawler+queue">queue</a></code> and implements an asynchronous interface for accessing queue items and statistics. There are several methods for interacting with the queue, the simplest being <code><a href="#FetchQueue+get">get</a></code>, which lets you get a queue item at a specific index in the queue.
 
 <a name="FetchQueue+get"></a>
 
@@ -803,7 +804,7 @@ Get a queue item by index
 
 ### Manually adding to the queue
 
-To add items to the queue, use <code><a href="#Crawler+queueURL">crawler.queueURL</a></code>.
+To add items to the queue, use <code><a href="#Crawler+queueURL">queueURL</a></code>.
 
 <a name="Crawler+queueURL"></a>
 
@@ -868,7 +869,7 @@ First of all, the queue can provide some basic statistics about the network perf
 * `contentLength`
 * `actualDataSize`
 
-You can get the maximum, minimum, and average values for each with the <code><a href="#FetchQueue+max">crawler.queue.max</a></code>, <code><a href="#FetchQueue+min">crawler.queue.min</a></code>, and <code><a href="#FetchQueue+avg">crawler.queue.avg</a></code> functions respectively.
+You can get the maximum, minimum, and average values for each with the <code><a href="#FetchQueue+max">max</a></code>, <code><a href="#FetchQueue+min">min</a></code>, and <code><a href="#FetchQueue+avg">avg</a></code> functions respectively.
 
 <a name="FetchQueue+max"></a>
 
@@ -910,7 +911,7 @@ etc.
 | callback | <code>function</code> | Gets two parameters, `error` and `avg`. If the operation was successful, `error` will be `null`. |
 
 
-For general filtering or counting of queue items, there are two methods: <code><a href="#FetchQueue+filterItems">crawler.queue.filterItems</a></code> and <code><a href="#FetchQueue+countItems">crawler.queue.countItems</a></code>. Both take an object comparator and a callback.
+For general filtering or counting of queue items, there are two methods: <code><a href="#FetchQueue+filterItems">filterItems</a></code> and <code><a href="#FetchQueue+countItems">countItems</a></code>. Both take an object comparator and a callback.
 
 <a name="FetchQueue+filterItems"></a>
 
@@ -980,7 +981,7 @@ Import the queue from a frozen JSON file on disk.
 
 ## Cookies
 
-simplecrawler has an internal cookie jar, which collects and resends cookies automatically and by default. If you want to turn this off, set the <code><a href="#Crawler+acceptCookies">crawler.acceptCookies</a></code> option to `false`. The cookie jar is accessible via <code><a href="#Crawler+cookies">crawler.cookies</a></code>, and is an event emitter itself.
+simplecrawler has an internal cookie jar, which collects and resends cookies automatically and by default. If you want to turn this off, set the <code><a href="#Crawler+acceptCookies">acceptCookies</a></code> option to `false`. The cookie jar is accessible via <code><a href="#Crawler+cookies">cookies</a></code>, and is an event emitter itself.
 
 ### Cookie events
 
@@ -1035,14 +1036,14 @@ There are a couple of questions that pop up more often than others in the issue 
 
     It's definitely not a solution for every case, though — if you're writing a link checker or validator, you don't want erroneous 404s throwing errors. Therefore, simplecrawler allows you to tune discovery in a few key ways:
 
-    - You can either add to (or remove from) the <code><a href="#Crawler+discoverRegex">crawler.discoverRegex</a></code> array, tweaking the search patterns to meet your requirements; or
+    - You can either add to (or remove from) the <code><a href="#Crawler+discoverRegex">discoverRegex</a></code> array, tweaking the search patterns to meet your requirements; or
     - Swap out the `discoverResources` method. Parsing HTML pages is beyond the scope of simplecrawler, but it is very common to combine simplecrawler with a module like [cheerio](https://npmjs.com/package/cheerio) for more sophisticated resource discovery.
 
     Further documentation is available in the [link discovery](#link-discovery) section.
 
 - **Q: Why did simplecrawler complete without fetching any resources?**
 
-    A: When this happens, it is usually because the initial request was redirected to a different domain that wasn't in the <code><a href="#Crawler+domainWhitelist">crawler.domainWhitelist</a></code>.
+    A: When this happens, it is usually because the initial request was redirected to a different domain that wasn't in the <code><a href="#Crawler+domainWhitelist">domainWhitelist</a></code>.
 
 - **Q: How do I crawl a site that requires a login?**
 
