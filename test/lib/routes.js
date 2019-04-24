@@ -56,7 +56,7 @@ module.exports = {
     "/cookie": function(write) {
         var expires = new Date();
         expires.setHours(expires.getHours() + 10);
-        var cookie = "thing=stuff; expires=" + expires + "; path=/; domain=.localhost";
+        var cookie = "thing=stuff; expires=" + expires.toUTCString() + "; path=/; domain=.localhost";
 
         write(200, "<a href='/stage7'>Link</a>", { "Set-Cookie": cookie });
     },
@@ -189,6 +189,6 @@ module.exports = {
     },
 
     "/big": function(write) {
-        write(200, new Buffer(1024 * 1024 * 17));
+        write(200, Buffer.alloc(1024 * 1024 * 17));
     }
 };

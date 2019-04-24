@@ -86,6 +86,16 @@ describe("Crawler link discovery", function() {
         links[1].should.equal("http://example.com/resource");
     });
 
+    it("should replace all '&#x2f;'s with slashes", function() {
+
+        var links =
+            discover("<a href='http:&#x2f;&#x2f;example.com&#x2f;resource'>");
+
+        links.should.be.an("array");
+        links.length.should.equal(1);
+        links[0].should.equal("http://example.com/resource");
+    });
+
     it("should find and follow meta redirects", function() {
 
         var links =
@@ -151,9 +161,7 @@ describe("Crawler link discovery", function() {
         var links =
             discover("<a href='javascript:;'>" +
                      " <a href='javascript: void(0);'>" +
-                     " <a href='javascript: goToURL(\"/page/one\")'>", {
-                         url: "http://example.com/"
-                     });
+                     " <a href='javascript: goToURL(\"/page/one\")'>", { url: "http://example.com/" });
 
         links.should.be.an("array");
         links.length.should.equal(2);
@@ -177,9 +185,7 @@ describe("Crawler link discovery", function() {
         var links =
             discover("<a href='https://example.com/#section'>My web page</a>" +
                      "<a href='/other/page#blabla'>Link</a>" +
-                     "<a href='#section'>Section</a>", {
-                         url: "https://example.com/"
-                     });
+                     "<a href='#section'>Section</a>", { url: "https://example.com/" });
 
         links.should.be.an("array");
         links.length.should.equal(2);

@@ -2,9 +2,10 @@
 
 [![NPM version](https://img.shields.io/npm/v/simplecrawler.svg)](https://www.npmjs.com/package/simplecrawler)
 [![Linux Build Status](https://img.shields.io/travis/simplecrawler/simplecrawler/master.svg)](https://travis-ci.org/simplecrawler/simplecrawler)
-[![Windows Build Status](https://img.shields.io/appveyor/ci/simplecrawler/simplecrawler/master.svg?label=Windows%20build)](https://ci.appveyor.com/project/simplecrawler/simplecrawler/branch/master)
+[![Windows Build Status](https://img.shields.io/appveyor/ci/fredrikekelund/simplecrawler.svg?label=Windows%20build)](https://ci.appveyor.com/project/fredrikekelund/simplecrawler/branch/master)
 [![Dependency Status](https://img.shields.io/david/simplecrawler/simplecrawler.svg)](https://david-dm.org/simplecrawler/simplecrawler)
-[![devDependency Status](https://img.shields.io/david/dev/simplecrawler/simplecrawler.svg)](https://david-dm.org/simplecrawler/simplecrawler#info=devDependencies)
+[![devDependency Status](https://img.shields.io/david/dev/simplecrawler/simplecrawler.svg)](https://david-dm.org/simplecrawler/simplecrawler?type=dev)
+[![Greenkeeper badge](https://badges.greenkeeper.io/simplecrawler/simplecrawler.svg)](https://greenkeeper.io/)
 
 simplecrawler is designed to provide a basic, flexible and robust API for crawling websites. It was written to archive, analyse, and search some very large websites and has happily chewed through hundreds of thousands of pages and written tens of gigabytes to disk without issue.
 
@@ -110,23 +111,23 @@ crawler.start();
 
 simplecrawler's API is event driven, and there are plenty of events emitted during the different stages of the crawl.
 
-<a name="Crawler+event_fetchstart"></a>
+<a name="Crawler+event_crawlstart"></a>
 
-#### "fetchstart"
+#### "crawlstart"
 Fired when the crawl starts. This event gives you the opportunity to
 adjust the crawler's configuration, since the crawl won't actually start
 until the next processor tick.
 
-<a name="Crawler+event_fetchtimeout"></a>
+<a name="Crawler+event_discoverycomplete"></a>
 
-#### "fetchtimeout" (queueItem, timeout)
-Fired when a request times out
+#### "discoverycomplete" (queueItem, resources)
+Fired when the discovery of linked resources has completed
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the request timed out |
-| timeout | <code>Number</code> | The delay in milliseconds after which the request timed out |
+| queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item that represents the document for the discovered resources |
+| resources | <code>Array</code> | An array of discovered and cleaned URL's |
 
 <a name="Crawler+event_invaliddomain"></a>
 
@@ -1167,10 +1168,9 @@ Simplecrawler will officially support stable and LTS versions of Node which are 
 
 Currently supported versions:
 
-- 4.x
-- 5.x
 - 6.x
-- 7.x
+- 8.x
+- 10.x
 
 ## Current Maintainers
 
