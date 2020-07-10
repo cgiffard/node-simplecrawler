@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 
 var chai = require("chai"),
-    http = require("http"),
     Crawler = require("../");
 
 var routes = require("./lib/routes.js"),
@@ -169,12 +168,8 @@ describe("Fetch conditions", function() {
                 referrerQueueItem.stateData.should.have.property("requestLatency");
                 referrerQueueItem.stateData.should.have.property("requestTime");
                 referrerQueueItem.stateData.should.include({
-                    contentLength: 68,
                     contentType: "text/html",
                     code: 200
-                });
-                referrerQueueItem.stateData.should.have.property("headers").that.includes({
-                    "content-length": "68"
                 });
 
                 queueItem.should.be.an("object");
@@ -434,8 +429,8 @@ describe("Download conditions", function() {
                 path: "/"
             });
 
-            response.should.be.an("object");
-            response.should.be.an.instanceof(http.IncomingMessage);
+
+            response.status.should.equal(200);
 
             crawler.stop(true);
             done();
@@ -498,8 +493,7 @@ describe("Download conditions", function() {
             queueItem.should.be.an("object");
             queueItem.status.should.equal("notfound");
 
-            response.should.be.an("object");
-            response.should.be.an.instanceof(http.IncomingMessage);
+            response.status.should.equal(404);
 
             crawler.stop(true);
             done();
@@ -519,8 +513,7 @@ describe("Download conditions", function() {
             queueItem.should.be.an("object");
             queueItem.status.should.equal("downloadprevented");
 
-            response.should.be.an("object");
-            response.should.be.an.instanceof(http.IncomingMessage);
+            response.status.should.equal(200);
 
             crawler.stop(true);
             done();
