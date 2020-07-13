@@ -260,7 +260,7 @@ Fired when the headers for a request have been received
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the headers have been received |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| response | <code>Response</code> |  |
 
 <a name="Crawler+event_downloadconditionerror"></a>
 
@@ -283,7 +283,7 @@ by a download condition
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item representing the resource that was halfway fetched |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| response | <code>Response</code> |  |
 
 <a name="Crawler+event_notmodified"></a>
 
@@ -366,17 +366,6 @@ Fired when an error was encountered while unzipping the response data
 | responseBody | <code>String</code> \| <code>Buffer</code> | If [decodeResponses](#Crawler+decodeResponses) is true, this will be the decoded HTTP response. Otherwise it will be the raw response buffer. |
 | response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
 
-<a name="Crawler+event_fetchdataerror"></a>
-
-#### "fetchdataerror" (queueItem, response)
-Fired when a resource couldn't be downloaded because it exceeded the maximum allowed size
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the request failed |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
-
 <a name="Crawler+event_robotstxterror"></a>
 
 #### "robotstxterror" (error)
@@ -424,6 +413,11 @@ crawler.on("fetchcomplete", function(queueItem, data, res) {
 ## Configuration
 
 simplecrawler is highly configurable and there's a long list of settings you can change to adapt it to your specific needs.
+
+<a name="Crawler+fetchAgent"></a>
+
+#### crawler.fetchAgent : [<code>FetchAgent</code>](#FetchAgent)
+Determines which fetch the crawler will use
 
 <a name="Crawler+initialURL"></a>
 

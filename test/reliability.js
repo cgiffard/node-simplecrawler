@@ -323,7 +323,7 @@ describe("Crawler reliability", function() {
                     "The number of open requests should equal 2");
 
                 localCrawler._openRequests.forEach(function(req) {
-                    req.abort = function() {
+                    req.abortController.abort = function() {
                         abortCallCount++;
                     };
                 });

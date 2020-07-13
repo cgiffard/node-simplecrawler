@@ -59,8 +59,8 @@ describe("Test Crawl", function() {
 
         crawler.on("fetchstart", function(queueItem, requestOptions) {
             if (fetchstartCount++ === 2) {
-                requestOptions.headers.cookie.should.be.a("string");
-                requestOptions.headers.cookie.should.match(/^thing=stuff$/);
+                requestOptions.init.headers.cookie.should.be.a("string");
+                requestOptions.init.headers.cookie.should.match(/^thing=stuff$/);
                 done();
             }
         });
@@ -79,8 +79,8 @@ describe("Test Crawl", function() {
         ]);
 
         crawler.on("fetchstart", function(queueItem, requestOptions) {
-            requestOptions.headers.cookie.should.be.a("string");
-            requestOptions.headers.cookie.should.match(/^(name\d=value\d; ){2}(name\d=value\d)$/);
+            requestOptions.init.headers.cookie.should.be.a("string");
+            requestOptions.init.headers.cookie.should.match(/^(name\d=value\d; ){2}(name\d=value\d)$/);
 
             if (fetchstartCount++ === 6) {
                 done();
