@@ -260,7 +260,7 @@ Fired when the headers for a request have been received
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the headers have been received |
-| response | <code>Response</code> |  |
+| response | <code>Response</code> | An instace of [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 
 <a name="Crawler+event_downloadconditionerror"></a>
 
@@ -283,7 +283,7 @@ by a download condition
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item representing the resource that was halfway fetched |
-| response | <code>Response</code> |  |
+| response | <code>Response</code> | An instace of [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 
 <a name="Crawler+event_notmodified"></a>
 
@@ -294,7 +294,7 @@ Fired when the crawler's cache was enabled and the server responded with a 304 N
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the request returned a 304 status |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| response | <code>Response</code> | An instace of [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 | cacheObject | <code>CacheObject</code> | The CacheObject returned from the cache backend |
 
 <a name="Crawler+event_fetchredirect"></a>
@@ -307,7 +307,7 @@ Fired when the server returned a redirect HTTP status for the request
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the request was redirected |
 | redirectQueueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for the redirect target resource |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| response | <code>Response</code> | An instace of [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 
 <a name="Crawler+event_fetch404"></a>
 
@@ -318,7 +318,7 @@ Fired when the server returned a 404 Not Found status for the request
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the request returned a 404 status |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| response | <code>Response</code> | An instace of [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 
 <a name="Crawler+event_fetch410"></a>
 
@@ -329,7 +329,7 @@ Fired when the server returned a 410 Gone status for the request
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the request returned a 410 status |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| response | <code>Response</code> | An instace of [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 
 <a name="Crawler+event_fetcherror"></a>
 
@@ -340,7 +340,7 @@ Fired when the server returned a status code above 400 that isn't 404 or 410
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the request failed |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| response | <code>Response</code> | An instace of [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 
 <a name="Crawler+event_fetchcomplete"></a>
 
@@ -352,11 +352,11 @@ Fired when the request has completed
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the request has completed |
 | responseBody | <code>String</code> \| <code>Buffer</code> | If [decodeResponses](#Crawler+decodeResponses) is true, this will be the decoded HTTP response. Otherwise it will be the raw response buffer. |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| response | <code>Response</code> | An instace of [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 
 <a name="Crawler+event_gziperror"></a>
 
-#### "gziperror" (queueItem, responseBody, response)
+#### "gziperror" (queueItem, responseBody, error, responseBuffer)
 Fired when an error was encountered while unzipping the response data
 
 
@@ -364,7 +364,8 @@ Fired when an error was encountered while unzipping the response data
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The queue item for which the unzipping failed |
 | responseBody | <code>String</code> \| <code>Buffer</code> | If [decodeResponses](#Crawler+decodeResponses) is true, this will be the decoded HTTP response. Otherwise it will be the raw response buffer. |
-| response | <code>http.IncomingMessage</code> | The [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) for the request's response |
+| error | <code>Error</code> | If unzip failed due to any error. |
+| responseBuffer | <code>Buffer</code> | Response buffer |
 
 <a name="Crawler+event_robotstxterror"></a>
 
@@ -417,7 +418,7 @@ simplecrawler is highly configurable and there's a long list of settings you can
 <a name="Crawler+fetchAgent"></a>
 
 #### crawler.fetchAgent : [<code>FetchAgent</code>](#FetchAgent)
-Determines which fetch the crawler will use
+Crawler's underlying fetch
 
 <a name="Crawler+initialURL"></a>
 
@@ -606,12 +607,6 @@ Controls what domains the crawler is allowed to fetch from, regardless of
 #### crawler.allowedProtocols : <code>Array.&lt;RegExp&gt;</code>
 Controls what protocols the crawler is allowed to fetch from
 
-<a name="Crawler+maxResourceSize"></a>
-
-#### crawler.maxResourceSize : <code>Number</code>
-Controls the maximum allowed size in bytes of resources to be fetched
-
-**Default**: <code>16777216</code>  
 <a name="Crawler+supportedMimeTypes"></a>
 
 #### crawler.supportedMimeTypes : <code>Array.&lt;(RegExp\|string)&gt;</code>
@@ -763,7 +758,7 @@ determine whether to fetch the resource body.
 | Param | Type | Description |
 | --- | --- | --- |
 | queueItem | [<code>QueueItem</code>](#QueueItem) | The resource to be downloaded (or not) |
-| response | <code>http.IncomingMessage</code> | The response object as returned by node's `http` API |
+| response | <code>Response</code> | The response object as returned by fetch API. [Refer](https://developer.mozilla.org/en-US/docs/Web/API/Response) |
 | callback | <code>function</code> |  |
 
 <a name="Crawler+removeDownloadCondition"></a>
