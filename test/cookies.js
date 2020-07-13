@@ -182,7 +182,7 @@ describe("Cookies", function() {
             });
         });
 
-        it.skip("should be able to generate a header from internal storage", function() {
+        it("should be able to generate a header from internal storage", function() {
             var cookieJar = new CookieJar();
             cookieJar.addFromHeaders(cookies);
             var comparisonHeaderList = cookieJar.getAsHeader();
@@ -199,7 +199,7 @@ describe("Cookies", function() {
             });
         });
 
-        it.skip("should be able to filter generated headers by domain and path", function() {
+        it("should be able to filter generated headers by domain and path", function() {
             var cookieJar = new CookieJar();
             cookieJar.addFromHeaders(cookies);
             var comparisonHeaderList = cookieJar.getAsHeader("nytimes.com");
@@ -212,7 +212,7 @@ describe("Cookies", function() {
             comparisonHeaderList.length.should.equal(5);
         });
 
-        it.skip("should be able to filter generated headers by expiry", function() {
+        it("should be able to filter generated headers by expiry", function() {
             var cookieJar = new CookieJar();
             cookieJar.addFromHeaders(cookies);
 
