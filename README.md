@@ -1017,8 +1017,8 @@ It is quite common to pair simplecrawler with a module like [cheerio](https://np
 The example below demonstrates how one might achieve basic HTML-correct discovery of only link tags using cheerio.
 
 ```js
-crawler.discoverResources = function(buffer, queueItem) {
-    var $ = cheerio.load(buffer.toString("utf8"));
+crawler.discoverResources = function(resourceText) {
+    var $ = cheerio.load(resourceText);
 
     return $("a[href]").map(function () {
         return $(this).attr("href");
